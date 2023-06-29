@@ -1,5 +1,7 @@
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
+const toDos = ["a", "b", "c", "d", "e", "f"];
+
 function App() {
 	const onDragEnd = () => {};
 
@@ -9,28 +11,19 @@ function App() {
 				<Droppable droppableId="list">
 					{(provied) => (
 						<ul ref={provied.innerRef} {...provied.droppableProps}>
-							<Draggable draggableId="item1" index={0}>
-								{(provied) => (
-									<li
-										ref={provied.innerRef}
-										{...provied.draggableProps}
-										{...provied.dragHandleProps}
-									>
-										item①
-									</li>
-								)}
-							</Draggable>
-							<Draggable draggableId="item2" index={1}>
-								{(provied) => (
-									<li
-										ref={provied.innerRef}
-										{...provied.draggableProps}
-										{...provied.dragHandleProps}
-									>
-										item②
-									</li>
-								)}
-							</Draggable>
+							{toDos.map((toDo, index) => (
+								<Draggable draggableId={toDo} key={index} index={index}>
+									{(provied) => (
+										<li
+											ref={provied.innerRef}
+											{...provied.draggableProps}
+											{...provied.dragHandleProps}
+										>
+											{toDo}
+										</li>
+									)}
+								</Draggable>
+							))}
 							{provied.placeholder}
 						</ul>
 					)}
