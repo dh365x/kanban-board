@@ -49,6 +49,20 @@ function App() {
 				};
 			});
 		}
+		// 다른보드 카드 이동
+		if (source.droppableId !== destination?.droppableId) {
+			setToDos((allBoard) => {
+				const sourceBoard = [...allBoard[source.droppableId]];
+				const destinationBoard = [...allBoard[destination.droppableId]];
+				sourceBoard.splice(source.index, 1);
+				destinationBoard.splice(destination.index, 0, draggableId);
+				return {
+					...allBoard,
+					[source.droppableId]: sourceBoard,
+					[destination.droppableId]: destinationBoard,
+				};
+			});
+		}
 	};
 
 	return (
