@@ -36,17 +36,21 @@ const toDoState = atom<IToDoState>({
 function App() {
 	const [toDos, setToDos] = useRecoilState(toDoState);
 	const onDragEnd = ({ draggableId, source, destination }: DropResult) => {
-		if (source.index === destination?.index) return;
-		// setToDos((currentToDos) => {
-		// 	// 1) 기존 배열의 요소를 추출하여 새 배열에 포함
-		// 	const copiedToDos = [...currentToDos];
-		// 	// 2) 선택한 아이템 제거(source.index)
-		// 	copiedToDos.splice(source.index, 1);
-		// 	// 3) 선택한 아이템을 도착지점에 포함(destination.index)
-		// 	copiedToDos.splice(Number(destination?.index), 0, draggableId);
-		// 	return copiedToDos;
-		// });
+		if (!destination) return;
+		// 같은보드 카드 이동
+		if (source.droppableId === destination?.droppableId) {
+			setToDos((allBoards) => {
+				const boardCopy = [...allBoards[source.droppableId]];
+				boardCopy.splice(source.index, 1);
+				boardCopy.splice(Number(destination?.index), 0, draggableId);
+				return {
+					...allBoards,
+					[source.droppableId]: boardCopy,
+				};
+			});
+		}
 	};
+
 	return (
 		<DragDropContext onDragEnd={onDragEnd}>
 			<Wrapper>
