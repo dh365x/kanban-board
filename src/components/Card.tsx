@@ -1,3 +1,4 @@
+import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import { styled } from "styled-components";
 
@@ -30,4 +31,4 @@ function Card({ toDo, index }: ICard) {
 	);
 }
 
-export default Card;
+export default React.memo(Card);

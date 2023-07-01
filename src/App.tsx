@@ -1,14 +1,14 @@
-import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
+import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { atom, useRecoilState } from "recoil";
-import { styled } from "styled-components";
-import Card from "./components/Card";
+import styled from "styled-components";
+import Board from "./components/Board";
 
 const Wrapper = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	margin: 0 auto;
-	max-width: 480px;
+	max-width: 680px;
 	width: 100%;
 	height: 100vh;
 	overflow: hidden;
@@ -16,61 +16,44 @@ const Wrapper = styled.div`
 
 const Boards = styled.div`
 	display: grid;
-	grid-template-columns: reap(1, 1fr);
+	grid-template-columns: repeat(3, 1fr);
 	width: 100%;
 `;
 
-const Board = styled.div`
-	padding: 10px;
-	min-height: 200px;
-	border-radius: 5px;
-	background-color: #eeeeee;
-`;
+interface IToDoState {
+	[key: string]: string[];
+}
 
-const Title = styled.h2`
-	padding: 10px;
-	text-align: center;
-	font-size: 18px;
-	font-weight: 600;
-`;
-
-const toDoState = atom({
+const toDoState = atom<IToDoState>({
 	key: "toDo",
-	default: ["a", "b", "c", "d", "e", "f"],
+	default: {
+		"To Do": ["a", "b"],
+		Doing: ["c", "d", "e"],
+		Done: ["f"],
+	},
 });
 
 function App() {
 	const [toDos, setToDos] = useRecoilState(toDoState);
 	const onDragEnd = ({ draggableId, source, destination }: DropResult) => {
-		console.log(draggableId, source, destination);
-
 		if (source.index === destination?.index) return;
-		setToDos((currentToDos) => {
-			// 1) 기존 배열의 요소를 추출하여 새 배열에 포함
-			const copiedToDos = [...currentToDos];
-			// 2) 선택한 아이템 제거(source.index)
-			copiedToDos.splice(source.index, 1);
-			// 3) 선택한 아이템을 도착지점에 포함(destination.index)
-			copiedToDos.splice(Number(destination?.index), 0, draggableId);
-			return copiedToDos;
-		});
+		// setToDos((currentToDos) => {
+		// 	// 1) 기존 배열의 요소를 추출하여 새 배열에 포함
+		// 	const copiedToDos = [...currentToDos];
+		// 	// 2) 선택한 아이템 제거(source.index)
+		// 	copiedToDos.splice(source.index, 1);
+		// 	// 3) 선택한 아이템을 도착지점에 포함(destination.index)
+		// 	copiedToDos.splice(Number(destination?.index), 0, draggableId);
+		// 	return copiedToDos;
+		// });
 	};
-
 	return (
 		<DragDropContext onDragEnd={onDragEnd}>
 			<Wrapper>
 				<Boards>
-					<Droppable droppableId="list">
-						{(provied) => (
-							<Board ref={provied.innerRef} {...provied.droppableProps}>
-								<Title>To Do</Title>
-								{toDos.map((toDo, index) => (
-									<Card key={toDo} index={index} toDo={toDo} />
-								))}
-								{provied.placeholder}
-							</Board>
-						)}
-					</Droppable>
+					{Object.keys(toDos).map((boardId) => (
+						<Board boardId={boardId} key={boardId} toDos={toDos[boardId]} />
+					))}
 				</Boards>
 			</Wrapper>
 		</DragDropContext>
