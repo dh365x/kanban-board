@@ -17,13 +17,14 @@ const Wrapper = styled.div<ISnapshot>`
 `;
 
 interface ICard {
-	toDo: string;
 	index: number;
+	toDoId: number;
+	toDoText: string;
 }
 
-function Card({ toDo, index }: ICard) {
+function Card({ index, toDoId, toDoText }: ICard) {
 	return (
-		<Draggable draggableId={toDo} key={toDo} index={index}>
+		<Draggable draggableId={String(toDoId)} key={toDoId} index={index}>
 			{(provied, snapshot) => (
 				<Wrapper
 					ref={provied.innerRef}
@@ -31,7 +32,7 @@ function Card({ toDo, index }: ICard) {
 					{...provied.dragHandleProps}
 					$isDragging={snapshot.isDragging}
 				>
-					{toDo}
+					{toDoText}
 				</Wrapper>
 			)}
 		</Draggable>

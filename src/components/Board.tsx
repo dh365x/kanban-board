@@ -2,6 +2,7 @@ import { Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
 import Card from "./Card";
 import { useForm } from "react-hook-form";
+import { ITodo } from "../atoms";
 
 interface ISnapshot {
 	$isDraggingOver: boolean;
@@ -31,7 +32,7 @@ const Form = styled.form`
 `;
 
 interface IBoard {
-	toDos: string[];
+	toDos: ITodo[];
 	boardId: string;
 }
 
@@ -64,7 +65,12 @@ function Board({ toDos, boardId }: IBoard) {
 						/>
 					</Form>
 					{toDos.map((toDo, index) => (
-						<Card key={toDo} index={index} toDo={toDo} />
+						<Card
+							key={toDo.id}
+							index={index}
+							toDoId={toDo.id}
+							toDoText={toDo.text}
+						/>
 					))}
 					{provided.placeholder}
 				</Wrapper>
