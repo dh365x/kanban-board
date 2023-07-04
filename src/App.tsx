@@ -1,7 +1,8 @@
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
-import { atom, useRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import Board from "./components/Board";
+import { toDoState } from "./atoms";
 
 const Wrapper = styled.div`
 	display: flex;
@@ -21,19 +22,6 @@ const Boards = styled.div`
 	width: 100%;
 	padding: 0 10px;
 `;
-
-interface IToDoState {
-	[key: string]: string[];
-}
-
-const toDoState = atom<IToDoState>({
-	key: "toDo",
-	default: {
-		"To Do": ["a", "b"],
-		Doing: ["c", "d", "e"],
-		Done: ["f"],
-	},
-});
 
 function App() {
 	const [toDos, setToDos] = useRecoilState(toDoState);

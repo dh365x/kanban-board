@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Card from "./Card";
 
 interface ISnapshot {
-	isDraggingOver: boolean;
+	$isDraggingOver: boolean;
 }
 
 const Wrapper = styled.div<ISnapshot>`
@@ -11,7 +11,7 @@ const Wrapper = styled.div<ISnapshot>`
 	padding: 20px 10px;
 	border-radius: 5px;
 	flex-grow: 1;
-	background-color: ${(props) => (props.isDraggingOver ? "#f9f9f9" : "null")};
+	background-color: ${(props) => (props.$isDraggingOver ? "#f9f9f9" : "null")};
 	transition: background-color 0.3s ease-in-out;
 `;
 
@@ -34,7 +34,7 @@ function Board({ toDos, boardId }: IBoard) {
 				<Wrapper
 					ref={provided.innerRef}
 					{...provided.droppableProps}
-					isDraggingOver={snapshot.isDraggingOver}
+					$isDraggingOver={snapshot.isDraggingOver}
 				>
 					<Title>{boardId}</Title>
 					{toDos.map((toDo, index) => (

@@ -3,7 +3,7 @@ import { Draggable } from "react-beautiful-dnd";
 import { styled } from "styled-components";
 
 interface ISnapshot {
-	isDragging: boolean;
+	$isDragging: boolean;
 }
 
 const Wrapper = styled.div<ISnapshot>`
@@ -13,7 +13,7 @@ const Wrapper = styled.div<ISnapshot>`
 	border: 1px solid #dcdcdc;
 	background-color: #ffffff;
 	box-shadow: 2px 2px 4px
-		${(props) => (props.isDragging ? "rgba(0,0,0,0.2)" : "null")};
+		${(props) => (props.$isDragging ? "rgba(0,0,0,0.2)" : "null")};
 `;
 
 interface ICard {
@@ -29,7 +29,7 @@ function Card({ toDo, index }: ICard) {
 					ref={provied.innerRef}
 					{...provied.draggableProps}
 					{...provied.dragHandleProps}
-					isDragging={snapshot.isDragging}
+					$isDragging={snapshot.isDragging}
 				>
 					{toDo}
 				</Wrapper>
