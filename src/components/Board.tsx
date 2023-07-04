@@ -1,6 +1,7 @@
 import { Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
 import Card from "./Card";
+import { useForm } from "react-hook-form";
 
 interface ISnapshot {
 	$isDraggingOver: boolean;
@@ -22,12 +23,28 @@ const Title = styled.h2`
 	font-weight: 600;
 `;
 
+const Form = styled.form`
+	width: 100%;
+	input {
+		width: 100%;
+	}
+`;
+
 interface IBoard {
 	toDos: string[];
 	boardId: string;
 }
 
+interface IForm {
+	toDo: string;
+}
+
 function Board({ toDos, boardId }: IBoard) {
+	const { register, handleSubmit, setValue } = useForm<IForm>();
+	const onValid = (data: IForm) => {
+		console.log(data);
+		setValue("toDo", "");
+	};
 	return (
 		<Droppable droppableId={boardId}>
 			{(provided, snapshot) => (
@@ -37,6 +54,15 @@ function Board({ toDos, boardId }: IBoard) {
 					$isDraggingOver={snapshot.isDraggingOver}
 				>
 					<Title>{boardId}</Title>
+					<Form onSubmit={handleSubmit(onValid)}>
+						<input
+							type="text"
+							placeholder={`Add task on ${boardId}`}
+							{...register("toDo", {
+								required: true,
+							})}
+						/>
+					</Form>
 					{toDos.map((toDo, index) => (
 						<Card key={toDo} index={index} toDo={toDo} />
 					))}
